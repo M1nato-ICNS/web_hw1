@@ -1,8 +1,11 @@
 :root {
-    --eva-green: #005d31;
-    --eva-light-green: #008c4a;
-    --sky-blue: #f0f7ff;
+    --eva-green: #005d31;          /* 長榮綠 */
+    --eva-white: #ffffff;          /* 白色 */
+    --eva-light-green: #008c4a;   /* 亮綠色 */
+    /* 修改背景色：改為深藍色，讓白色機身更明顯 */
+    --sky-blue: #1a3c5a;          
     --text-gray: #4a4a4a;
+    --container-bg: rgba(255, 255, 255, 0.95);
 }
 
 body, html {
@@ -10,19 +13,20 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: "Microsoft JhengHei", sans-serif;
-    background-color: var(--sky-blue);
+    /* 使用深色漸層，營造高空感 */
+    background: linear-gradient(to bottom, #1a3c5a 0%, #2c527a 100%);
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* --- 雲朵背景 (維持不變) --- */
+/* --- 雲朵背景：調低透明度，避免搶走飛機風采 --- */
 .cloud {
     position: absolute;
     background: white;
     border-radius: 50px;
-    opacity: 0.8;
+    opacity: 0.3; /* 降低雲朵亮度 */
     animation: move-cloud linear infinite;
 }
 
@@ -31,13 +35,13 @@ body, html {
     to { transform: translateX(-20vw); }
 }
 
-/* --- 容器設計 (維持不變) --- */
+/* --- 容器設計 --- */
 .container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--container-bg);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 93, 49, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     z-index: 10;
     max-width: 500px;
     width: 90%;
@@ -46,154 +50,134 @@ body, html {
     align-items: center;
 }
 
-/* =========================================
+/* ==================================================
    === 核心組裝飛機動畫 (CSS Drawing) ===
-   ========================================= */
+   ================================================== */
 
 .plane-assembler {
     position: relative;
-    width: 250px; /* 飛機組裝區的寬高 */
+    width: 250px;
     height: 150px;
     margin-bottom: 20px;
-    /* 組裝完成後的最後一個輕微浮動動畫 */
-    animation: float-assembled 4s ease-in-out infinite 6s; /* 延遲 6s 開始浮動 */
+    animation: float-assembled 4s ease-in-out infinite 6s;
+    /* 增加一點外發光，讓飛機在深色背景更立體 */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
 }
 
-/* 飛機零件通用樣式 */
 .plane-part {
     position: absolute;
-    background-color: var(--eva-green);
     border-radius: 5px;
-    opacity: 0; /* 初始隱藏，依序顯示 */
+    opacity: 0;
     transition: transform 0.8s ease-out, opacity 0.5s ease-out;
 }
 
-/* 1. 機身：最先飛入 (從下方) */
+/* 1. 機身：上半白下半綠 */
 .fuselage {
     width: 180px;
     height: 40px;
     top: 55px;
     left: 35px;
     border-radius: 20px;
+    background: linear-gradient(to bottom, var(--eva-white) 50%, var(--eva-green) 50%);
+    box-shadow: inset 0 -3px 5px rgba(0,0,0,0.1);
     animation: build-fuselage 1.2s ease-out forwards 0.5s;
 }
 
-/* 2. 上方機翼 (遠處)：依序飛入 (從上方) */
+/* 2. 上方機翼 (遠處) */
 .wing-far {
     width: 120px;
     height: 20px;
     top: 35px;
     left: 70px;
-    background-color: var(--eva-light-green); /* 用亮綠色區分遠近機翼 */
+    background-color: var(--eva-light-green);
     transform: rotate(25deg);
     clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-    animation: build-wing-far 1s ease-out forwards 2s; /* 延遲 2s */
+    animation: build-wing-far 1s ease-out forwards 2s;
 }
 
-/* 3. 下方機翼 (近處)：依序飛入 (從上方) */
+/* 3. 下方機翼 (近處) */
 .wing-near {
     width: 130px;
     height: 25px;
     top: 65px;
     left: 60px;
+    background-color: var(--eva-green);
     clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
     transform: rotate(-10deg);
-    animation: build-wing-near 1.1s ease-out forwards 2.8s; /* 延遲 2.8s */
+    animation: build-wing-near 1.1s ease-out forwards 2.8s;
 }
 
-/* 4. 尾翼：依序飛入 (從左側) */
+/* 4. 尾翼：上半白下半綠 */
 .tail-fin {
     width: 40px;
     height: 45px;
     top: 25px;
     left: 35px;
     clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-    background-color: var(--eva-light-green);
-    animation: build-tail 1s ease-out forwards 4s; /* 延遲 4s */
+    background: linear-gradient(to bottom, var(--eva-white) 50%, var(--eva-green) 50%);
+    animation: build-tail 1s ease-out forwards 4s;
 }
 
-/* 5. 螺旋槳：最先到達，並開始旋轉 */
+/* 5. 螺旋槳 */
 .propeller {
     width: 50px;
     height: 10px;
     top: 70px;
     right: 20px;
-    background-color: #4a4a4a;
-    border-radius: 0px;
+    background-color: #333;
     clip-path: polygon(0% 40%, 100% 0%, 100% 100%, 0% 60%);
     animation: build-propeller 0.8s ease-out forwards 5s, propeller-spin 0.2s linear infinite 5.8s;
 }
 
-/* 6. 窗戶：增加一點白色細節 */
+/* 6. 窗戶：綠色窗戶在白色機身上 */
 .windows {
     width: 120px;
     height: 10px;
     top: 70px;
     left: 60px;
-    background-color: white;
+    background-color: var(--eva-green);
     border-radius: 5px;
     opacity: 0;
-    clip-path: circle(20% at 20% 50%) circle(20% at 40% 50%) circle(20% at 60% 50%) circle(20% at 80% 50%);
+    clip-path: circle(15% at 20% 50%) circle(15% at 40% 50%) circle(15% at 60% 50%) circle(15% at 80% 50%);
     animation: fade-in-windows 1s ease-out forwards 5.5s;
 }
 
-/* --- 零件組裝 Keyframes --- */
-
+/* --- 動畫 Keyframes --- */
 @keyframes build-fuselage {
-    0% { transform: translate(0, 100px) rotate(0deg); opacity: 0; }
-    80% { transform: translate(0, -5px) rotate(0deg); opacity: 1; }
-    100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    0% { transform: translate(0, 100px); opacity: 0; }
+    100% { transform: translate(0, 0); opacity: 1; }
 }
-
 @keyframes build-wing-far {
     0% { transform: translate(0, -100px) rotate(25deg); opacity: 0; }
     100% { transform: translate(0, 0) rotate(25deg); opacity: 1; }
 }
-
 @keyframes build-wing-near {
     0% { transform: translate(0, -80px) rotate(-10deg); opacity: 0; }
     100% { transform: translate(0, 0) rotate(-10deg); opacity: 1; }
 }
-
 @keyframes build-tail {
     0% { transform: translate(-100px, -20px); opacity: 0; }
     100% { transform: translate(0, 0); opacity: 1; }
 }
-
 @keyframes build-propeller {
     0% { transform: translate(30px, 0); opacity: 0; }
     100% { transform: translate(0, 0); opacity: 1; }
 }
-
 @keyframes propeller-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
 @keyframes fade-in-windows {
-    to { opacity: 0.7; }
+    to { opacity: 0.6; }
 }
-
-/* 7. 組裝完成後的總浮動動畫 */
 @keyframes float-assembled {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-10px) rotate(1deg); }
 }
 
-/* --- 進度條與其他文字 (維持不變) --- */
-h1 {
-    color: var(--eva-green);
-    font-size: 24px;
-    margin: 15px 0;
-}
-
-p {
-    color: var(--text-gray);
-    line-height: 1.6;
-    margin: 0 0 25px 0;
-    transition: opacity 0.5s;
-}
-
+/* --- 文字與進度條 --- */
+h1 { color: var(--eva-green); font-size: 24px; margin: 15px 0; }
+p { color: var(--text-gray); line-height: 1.6; margin: 0 0 25px 0; }
 .progress-container {
     width: 100%;
     background-color: #e0e0e0;
@@ -202,22 +186,11 @@ p {
     margin-bottom: 15px;
     overflow: hidden;
 }
-
 .progress-bar {
     width: 0%;
     height: 100%;
     background: linear-gradient(90deg, var(--eva-green), var(--eva-light-green));
     transition: width 0.5s;
 }
-
-.status-text {
-    font-size: 14px;
-    color: var(--eva-light-green);
-    font-weight: bold;
-}
-
-.footer-note {
-    font-size: 12px;
-    color: #999;
-    margin-top: 20px;
-}
+.status-text { font-size: 14px; color: var(--eva-light-green); font-weight: bold; }
+.footer-note { font-size: 11px; color: #999; margin-top: 20px; }
