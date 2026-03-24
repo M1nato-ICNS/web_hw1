@@ -1,8 +1,8 @@
 :root {
-    --eva-green: #005d31;          /* 長榮綠 */
-    --eva-white: #ffffff;          /* 白色 */
-    --eva-light-green: #008c4a;   /* 亮綠色 */
-    /* 修改背景色：改為深藍色，讓白色機身更明顯 */
+    --eva-green: #005d31;         
+    --eva-white: #ffffff;          
+    --eva-light-green: #008c4a;   
+
     --sky-blue: #1a3c5a;          
     --text-gray: #4a4a4a;
     --container-bg: rgba(255, 255, 255, 0.95);
@@ -13,7 +13,7 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: "Microsoft JhengHei", sans-serif;
-    /* 使用深色漸層，營造高空感 */
+
     background: linear-gradient(to bottom, #1a3c5a 0%, #2c527a 100%);
     overflow: hidden;
     display: flex;
@@ -21,12 +21,12 @@ body, html {
     align-items: center;
 }
 
-/* --- 雲朵背景：調低透明度，避免搶走飛機風采 --- */
+
 .cloud {
     position: absolute;
     background: white;
     border-radius: 50px;
-    opacity: 0.3; /* 降低雲朵亮度 */
+    opacity: 0.3;
     animation: move-cloud linear infinite;
 }
 
@@ -35,7 +35,7 @@ body, html {
     to { transform: translateX(-20vw); }
 }
 
-/* --- 容器設計 --- */
+
 .container {
     text-align: center;
     background: var(--container-bg);
@@ -50,9 +50,7 @@ body, html {
     align-items: center;
 }
 
-/* ==================================================
-   === 核心組裝飛機動畫 (CSS Drawing) ===
-   ================================================== */
+
 
 .plane-assembler {
     position: relative;
@@ -60,7 +58,7 @@ body, html {
     height: 150px;
     margin-bottom: 20px;
     animation: float-assembled 4s ease-in-out infinite 6s;
-    /* 增加一點外發光，讓飛機在深色背景更立體 */
+
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
 }
 
@@ -71,7 +69,7 @@ body, html {
     transition: transform 0.8s ease-out, opacity 0.5s ease-out;
 }
 
-/* 1. 機身：上半白下半綠 */
+
 .fuselage {
     width: 180px;
     height: 40px;
@@ -83,7 +81,6 @@ body, html {
     animation: build-fuselage 1.2s ease-out forwards 0.5s;
 }
 
-/* 2. 上方機翼 (遠處) */
 .wing-far {
     width: 120px;
     height: 20px;
@@ -95,7 +92,6 @@ body, html {
     animation: build-wing-far 1s ease-out forwards 2s;
 }
 
-/* 3. 下方機翼 (近處) */
 .wing-near {
     width: 130px;
     height: 25px;
@@ -107,7 +103,6 @@ body, html {
     animation: build-wing-near 1.1s ease-out forwards 2.8s;
 }
 
-/* 4. 尾翼：上半白下半綠 */
 .tail-fin {
     width: 40px;
     height: 45px;
@@ -118,7 +113,6 @@ body, html {
     animation: build-tail 1s ease-out forwards 4s;
 }
 
-/* 5. 螺旋槳 */
 .propeller {
     width: 50px;
     height: 10px;
@@ -129,7 +123,6 @@ body, html {
     animation: build-propeller 0.8s ease-out forwards 5s, propeller-spin 0.2s linear infinite 5.8s;
 }
 
-/* 6. 窗戶：綠色窗戶在白色機身上 */
 .windows {
     width: 120px;
     height: 10px;
@@ -142,7 +135,6 @@ body, html {
     animation: fade-in-windows 1s ease-out forwards 5.5s;
 }
 
-/* --- 動畫 Keyframes --- */
 @keyframes build-fuselage {
     0% { transform: translate(0, 100px); opacity: 0; }
     100% { transform: translate(0, 0); opacity: 1; }
@@ -175,7 +167,6 @@ body, html {
     50% { transform: translateY(-10px) rotate(1deg); }
 }
 
-/* --- 文字與進度條 --- */
 h1 { color: var(--eva-green); font-size: 24px; margin: 15px 0; }
 p { color: var(--text-gray); line-height: 1.6; margin: 0 0 25px 0; }
 .progress-container {
